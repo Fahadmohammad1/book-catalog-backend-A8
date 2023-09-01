@@ -7,8 +7,8 @@ import { AuthService } from './auth.service';
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.createUser(req.body);
   sendResponse(res, {
-    statusCode: httpStatus.OK,
     success: true,
+    statusCode: httpStatus.OK,
     message: 'User created successfully',
     data: result,
   });
@@ -17,10 +17,10 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.loginUser(req.body);
   sendResponse(res, {
-    statusCode: httpStatus.OK,
     success: true,
+    statusCode: httpStatus.OK,
     message: 'Login successfull',
-    data: result,
+    token: result.token,
   });
 });
 

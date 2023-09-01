@@ -6,9 +6,9 @@ import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import prisma from '../../../shared/prisma';
-import { ILoginUser } from './auth.interface';
+import { ILoginUser, IUser } from './auth.interface';
 
-const createUser = async (userData: User): Promise<User> => {
+const createUser = async (userData: User): Promise<IUser> => {
   const isUserExist = await prisma.user.findUnique({
     where: {
       email: userData.email,
@@ -24,9 +24,12 @@ const createUser = async (userData: User): Promise<User> => {
     Number(config.bycrypt_salt_rounds)
   );
 
-  const result = await prisma.user.create({
+  const createdUser = await prisma.user.create({
     data: userData,
   });
+
+  // eslint-disable-next-line no-unused-vars
+  const { password, ...result } = createdUser;
 
   return result;
 };
@@ -53,14 +56,14 @@ const loginUser = async (payload: ILoginUser) => {
 
   const { id: userId, role } = isUserExist;
 
-  const accessToken = jwtHelpers.createToken(
+  const token = jwtHelpers.createToken(
     { userId, role },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
 
   return {
-    accessToken,
+    token,
   };
 };
 
