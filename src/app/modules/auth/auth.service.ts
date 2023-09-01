@@ -43,8 +43,8 @@ const loginUser = async (payload: ILoginUser) => {
   }
 
   const isPasswordMatched = await bcrypt.compare(
-    isUserExist.password,
-    payload.password
+    payload.password,
+    isUserExist.password
   );
 
   if (isUserExist.password && !isPasswordMatched) {
