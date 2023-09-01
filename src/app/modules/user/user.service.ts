@@ -21,6 +21,31 @@ const getAllUsers = async (): Promise<IGenericResponse<IUser[]>> => {
   };
 };
 
+const getSingleUser = async (
+  id: string
+): Promise<IGenericResponse<IUser | null>> => {
+  const result = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
+  });
+
+  return {
+    meta: {},
+    data: result,
+  };
+};
+
 export const UserService = {
   getAllUsers,
+  getSingleUser,
 };
