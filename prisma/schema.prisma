@@ -68,12 +68,12 @@ model ReviewAndRating {
 model Order {
   id String @id @default(uuid())
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  status       OrderStatus   @default(pending)
-  createdAt    DateTime
+  userId       String
   orderedBooks OrderedBook[]
+  user         User          @relation(fields: [userId], references: [id])
+
+  status    OrderStatus @default(pending)
+  createdAt DateTime    @default(now())
 
   @@map("orders")
 }
