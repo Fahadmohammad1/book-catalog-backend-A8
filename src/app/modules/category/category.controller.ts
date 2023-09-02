@@ -27,17 +27,17 @@ const getAllCategory = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-//   const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
-//     const id = req.params.id;
-//     const result = await UserService.getSingleUser(id);
+const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await CategoryService.getSingleCategory(id);
 
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User retrieved successfully !',
-//       data: result.data,
-//     });
-//   });
+  sendResponse<Category>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Category retrieved successfully !',
+    data: result.data,
+  });
+});
 
 //   const updateCategory = catchAsync(async (req: Request, res: Response) => {
 //     const id = req.params.id;
@@ -66,7 +66,7 @@ const getAllCategory = catchAsync(async (req: Request, res: Response) => {
 export const CategoryController = {
   createCategory,
   getAllCategory,
-  // getSingleCategory,
+  getSingleCategory,
   // updateCategory,
   // deleteCategory
 };

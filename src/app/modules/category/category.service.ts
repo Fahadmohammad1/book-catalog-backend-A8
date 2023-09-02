@@ -31,29 +31,23 @@ const getAllCategory = async (): Promise<IGenericResponse<Category[]>> => {
   };
 };
 
-//   const getSingleCategory = async (
-//     id: string
-//   ): Promise<IGenericResponse<IUser | null>> => {
-//     const result = await prisma.user.findUnique({
-//       where: {
-//         id,
-//       },
-//       select: {
-//         id: true,
-//         name: true,
-//         email: true,
-//         role: true,
-//         contactNo: true,
-//         address: true,
-//         profileImg: true,
-//       },
-//     });
+const getSingleCategory = async (
+  id: string
+): Promise<IGenericResponse<Category | null>> => {
+  const result = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      books: true,
+    },
+  });
 
-//     return {
-//       meta: {},
-//       data: result,
-//     };
-//   };
+  return {
+    meta: {},
+    data: result,
+  };
+};
 
 //   const updateCategory = async (
 //     id: string,
@@ -90,7 +84,7 @@ const getAllCategory = async (): Promise<IGenericResponse<Category[]>> => {
 export const CategoryService = {
   createCategory,
   getAllCategory,
-  // getSingleCategory,
+  getSingleCategory,
   // updateCategory,
   // deleteCategory
 };
