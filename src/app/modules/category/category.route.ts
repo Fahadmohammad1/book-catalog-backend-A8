@@ -11,7 +11,7 @@ router.post(
   CategoryController.createCategory
 );
 
-// router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers);
+router.get('/', auth(ENUM_USER_ROLE.ADMIN), CategoryController.getAllCategory);
 
 // router.patch(
 //   '/:id',

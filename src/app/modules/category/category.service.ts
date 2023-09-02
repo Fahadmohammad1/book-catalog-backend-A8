@@ -1,6 +1,7 @@
 import { Category } from '@prisma/client';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
+import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 
 const createCategory = async (category: Category): Promise<Category> => {
@@ -21,24 +22,14 @@ const createCategory = async (category: Category): Promise<Category> => {
   return result;
 };
 
-// const getAllCategory = async (): Promise<IGenericResponse<IUser[]>> => {
-//     const result = await prisma.user.findMany({
-//       select: {
-//         id: true,
-//         name: true,
-//         email: true,
-//         role: true,
-//         contactNo: true,
-//         address: true,
-//         profileImg: true,
-//       },
-//     });
+const getAllCategory = async (): Promise<IGenericResponse<Category[]>> => {
+  const result = await prisma.category.findMany({});
 
-//     return {
-//       meta: {},
-//       data: result,
-//     };
-//   };
+  return {
+    meta: {},
+    data: result,
+  };
+};
 
 //   const getSingleCategory = async (
 //     id: string
@@ -98,7 +89,7 @@ const createCategory = async (category: Category): Promise<Category> => {
 
 export const CategoryService = {
   createCategory,
-  // getAllCategory,
+  getAllCategory,
   // getSingleCategory,
   // updateCategory,
   // deleteCategory

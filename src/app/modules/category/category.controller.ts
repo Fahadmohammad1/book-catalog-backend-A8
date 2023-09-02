@@ -1,3 +1,4 @@
+import { Category } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
@@ -14,17 +15,17 @@ const createCategory = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const getAllCategory = catchAsync(async (req: Request, res: Response) => {
-//     const result = await UserService.getAllUsers();
+const getAllCategory = catchAsync(async (req: Request, res: Response) => {
+  const result = await CategoryService.getAllCategory();
 
-//     sendResponse<IUser[]>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Users retrieved successfully !',
-//       meta: result.meta,
-//       data: result.data,
-//     });
-//   });
+  sendResponse<Category[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Categories fetched successfully !',
+    meta: result.meta,
+    data: result.data,
+  });
+});
 
 //   const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
 //     const id = req.params.id;
@@ -64,7 +65,7 @@ const createCategory = catchAsync(async (req: Request, res: Response) => {
 
 export const CategoryController = {
   createCategory,
-  // getAllCategory,
+  getAllCategory,
   // getSingleCategory,
   // updateCategory,
   // deleteCategory
