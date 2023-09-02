@@ -17,13 +17,20 @@ const createBook = async (bookData: Book): Promise<Book> => {
 
   const result = await prisma.book.create({
     data: bookData,
+    include: {
+      category: true,
+    },
   });
 
   return result;
 };
 
 const getAllBooks = async (): Promise<IGenericResponse<Book[]>> => {
-  const result = await prisma.book.findMany({});
+  const result = await prisma.book.findMany({
+    include: {
+      category: true,
+    },
+  });
 
   return {
     meta: {},
@@ -51,6 +58,9 @@ const getBooksByCategoryId = async (categoryId: string) => {
     where: {
       categoryId,
     },
+    include: {
+      category: true,
+    },
   });
 
   return {
@@ -68,6 +78,9 @@ const updateBook = async (
       id,
     },
     data: payload,
+    include: {
+      category: true,
+    },
   });
 
   return {

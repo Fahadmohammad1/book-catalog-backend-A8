@@ -14,7 +14,7 @@ const create = z.object({
     price: z.number({
       required_error: 'Price is required',
     }),
-    publicationDate: z.date({
+    publicationDate: z.string({
       required_error: 'Publication Date is required',
     }),
     categoryId: z.string({

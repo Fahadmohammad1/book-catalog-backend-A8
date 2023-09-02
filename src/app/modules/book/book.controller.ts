@@ -45,7 +45,7 @@ const getBooksByCategoryId = catchAsync(async (req: Request, res: Response) => {
   sendResponse<Book[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Books fetched successfully !',
+    message: 'Books with associated category data fetched successfully!',
     meta: result.meta,
     data: result.data,
   });

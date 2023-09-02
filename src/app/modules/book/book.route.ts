@@ -8,6 +8,7 @@ import { BookValidation } from './book.validation';
 const router = express.Router();
 
 router.get('/:id', BookController.getSingleBook);
+router.get('/:categoryId/category', BookController.getBooksByCategoryId);
 
 router.post(
   '/create-book',
