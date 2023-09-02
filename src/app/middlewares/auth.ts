@@ -21,7 +21,7 @@ const auth =
       req.user = verifiedUser;
 
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-        throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+        throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden Access');
       }
       next();
     } catch (error) {
