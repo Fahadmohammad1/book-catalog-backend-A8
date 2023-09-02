@@ -70,8 +70,44 @@ const getAllOrders = async (user: JwtPayload): Promise<Order[] | null> => {
 
   return result;
 };
+const getSingleOrder = async (
+  user: JwtPayload,
+  orderId: string
+): Promise<Order | null> => {
+  console.log(orderId);
+  let result = null;
+  if (user.role === 'admin') {
+    result = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+  }
+
+  const checkOrder = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+    },
+  });
+
+  if (user.role === 'customer' && checkOrder?.userId !== user.userId) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'You cannot access the order');
+  }
+
+  if (user.role === 'customer') {
+    result = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+        userId: user.userId,
+      },
+    });
+  }
+
+  return result;
+};
 
 export const OrderService = {
   createOrder,
   getAllOrders,
+  getSingleOrder,
 };

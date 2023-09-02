@@ -26,7 +26,22 @@ const getAllOrders = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
+  const orderId = req.params.orderId;
+  const result = await OrderService.getSingleOrder(
+    req.user as JwtPayload,
+    orderId
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Order retrieved successfully',
+    data: result,
+  });
+});
+
 export const OrderController = {
   createOrder,
   getAllOrders,
+  getSingleOrder,
 };
