@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 import { IUser } from '../auth/auth.interface';
@@ -45,7 +46,25 @@ const getSingleUser = async (
   };
 };
 
+const updateUser = async (
+  id: string,
+  payload: Partial<User>
+): Promise<IGenericResponse<IUser | null>> => {
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+
+  return {
+    meta: {},
+    data: result,
+  };
+};
+
 export const UserService = {
   getAllUsers,
   getSingleUser,
+  updateUser,
 };
