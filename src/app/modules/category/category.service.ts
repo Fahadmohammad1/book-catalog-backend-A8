@@ -49,42 +49,42 @@ const getSingleCategory = async (
   };
 };
 
-//   const updateCategory = async (
-//     id: string,
-//     payload: Partial<User>
-//   ): Promise<IGenericResponse<IUser | null>> => {
-//     const result = await prisma.user.update({
-//       where: {
-//         id,
-//       },
-//       data: payload,
-//     });
+const updateCategory = async (
+  id: string,
+  payload: Partial<Category>
+): Promise<IGenericResponse<Category | null>> => {
+  const result = await prisma.category.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
 
-//     return {
-//       meta: {},
-//       data: result,
-//     };
-//   };
+  return {
+    meta: {},
+    data: result,
+  };
+};
 
-//   const deleteCategory = async (
-//     id: string
-//   ): Promise<IGenericResponse<User | null>> => {
-//     const result = await prisma.user.delete({
-//       where: {
-//         id,
-//       },
-//     });
+const deleteCategory = async (
+  id: string
+): Promise<IGenericResponse<Category | null>> => {
+  const result = await prisma.category.delete({
+    where: {
+      id,
+    },
+  });
 
-//     return {
-//       meta: {},
-//       data: result,
-//     };
-//   };
+  return {
+    meta: {},
+    data: result,
+  };
+};
 
 export const CategoryService = {
   createCategory,
   getAllCategory,
   getSingleCategory,
-  // updateCategory,
-  // deleteCategory
+  updateCategory,
+  deleteCategory,
 };

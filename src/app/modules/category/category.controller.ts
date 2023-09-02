@@ -39,34 +39,34 @@ const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-//   const updateCategory = catchAsync(async (req: Request, res: Response) => {
-//     const id = req.params.id;
-//     const result = await UserService.updateUser(id, req.body);
+const updateCategory = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await CategoryService.updateCategory(id, req.body);
 
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User updated successfully !',
-//       data: result.data,
-//     });
-//   });
+  sendResponse<Category>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Category updated successfully !',
+    data: result.data,
+  });
+});
 
-//   const deleteCategory = catchAsync(async (req: Request, res: Response) => {
-//     const id = req.params.id;
-//     const result = await UserService.deleteUser(id);
+const deleteCategory = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await CategoryService.deleteCategory(id);
 
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User deleted successfully !',
-//       data: result.data,
-//     });
-//   });
+  sendResponse<Category>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Category deleted successfully !',
+    data: result.data,
+  });
+});
 
 export const CategoryController = {
   createCategory,
   getAllCategory,
   getSingleCategory,
-  // updateCategory,
-  // deleteCategory
+  updateCategory,
+  deleteCategory,
 };
