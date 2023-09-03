@@ -13,7 +13,7 @@ const category_validation_1 = require("./category.validation");
 const router = express_1.default.Router();
 router.get('/:id', category_controller_1.CategoryController.getSingleCategory);
 router.post('/create-category', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(category_validation_1.CategoryValidation.create), category_controller_1.CategoryController.createCategory);
-router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), category_controller_1.CategoryController.getAllCategory);
+router.get('/', category_controller_1.CategoryController.getAllCategory);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(category_validation_1.CategoryValidation.update), category_controller_1.CategoryController.updateCategory);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), category_controller_1.CategoryController.deleteCategory);
 exports.CategoryRoutes = router;

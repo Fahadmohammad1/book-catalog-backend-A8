@@ -33,14 +33,76 @@ const createBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () 
     });
     return result;
 });
-const getAllBooks = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllBooks = (size, page, sortBy, sortOrder, search, filterData) => __awaiter(void 0, void 0, void 0, function* () {
+    const { minPrice, maxPrice } = filterData;
+    const searchFields = {
+        OR: [
+            {
+                title: {
+                    contains: search,
+                    mode: 'insensitive',
+                },
+            },
+            {
+                author: {
+                    contains: search,
+                    mode: 'insensitive',
+                },
+            },
+            {
+                genre: {
+                    contains: search,
+                    mode: 'insensitive',
+                },
+            },
+        ],
+    };
+    const priceConditions = [];
+    if (minPrice !== undefined) {
+        priceConditions.push({
+            price: {
+                gte: Number(minPrice),
+            },
+        });
+    }
+    if (maxPrice !== undefined) {
+        priceConditions.push({
+            price: {
+                lt: Number(maxPrice),
+            },
+        });
+    }
+    const whereConditions = [];
+    if (search) {
+        whereConditions.push(searchFields);
+    }
+    if (priceConditions.length > 0) {
+        whereConditions.push({
+            OR: priceConditions,
+        });
+    }
     const result = yield prisma_1.default.book.findMany({
+        where: {
+            AND: whereConditions,
+        },
         include: {
             category: true,
         },
+        take: size,
+        skip: (page - 1) * size,
+        orderBy: {
+            [sortBy]: sortOrder,
+        },
     });
+    const total = yield prisma_1.default.book.count();
+    const totalPage = Math.ceil(total / size);
     return {
-        meta: {},
+        meta: {
+            page,
+            size,
+            total,
+            totalPage,
+        },
         data: result,
     };
 });

@@ -11,6 +11,16 @@ const createBook = async (bookData: Book): Promise<Book> => {
     },
   });
 
+  const findCategory = await prisma.category.findFirst({
+    where: {
+      id: bookData.categoryId,
+    },
+  });
+
+  if (!findCategory) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Category Does not exist');
+  }
+
   if (isBookExist) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Book already in exist');
   }
