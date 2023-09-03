@@ -25,15 +25,73 @@ const createBook = async (bookData: Book): Promise<Book> => {
   return result;
 };
 
-const getAllBooks = async (): Promise<IGenericResponse<Book[]>> => {
+const getAllBooks = async (
+  size: number,
+  page: number,
+  sortBy: string,
+  sortOrder: 'asc' | 'desc',
+  search: string,
+  filterData: any
+): Promise<IGenericResponse<Book[]>> => {
   const result = await prisma.book.findMany({
+    where: {
+      AND: [
+        {
+          OR: [
+            {
+              title: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            },
+            {
+              author: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            },
+            {
+              genre: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            },
+          ],
+        },
+        {
+          OR: [
+            {
+              price: {
+                gte: filterData.minPrice,
+              },
+            },
+            {
+              price: {
+                lt: filterData.maxPrice,
+              },
+            },
+          ],
+        },
+      ],
+    },
     include: {
       category: true,
     },
+    take: size,
+    skip: (page - 1) * size,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
   });
 
+  const total = await prisma.book.count();
+
   return {
-    meta: {},
+    meta: {
+      page,
+      size,
+      total,
+    },
     data: result,
   };
 };
