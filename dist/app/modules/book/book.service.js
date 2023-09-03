@@ -22,6 +22,14 @@ const createBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () 
             title: bookData.title,
         },
     });
+    const findCategory = yield prisma_1.default.category.findFirst({
+        where: {
+            id: bookData.categoryId,
+        },
+    });
+    if (!findCategory) {
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Category Does not exist');
+    }
     if (isBookExist) {
         throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Book already in exist');
     }

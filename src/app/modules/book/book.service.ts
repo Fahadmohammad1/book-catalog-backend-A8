@@ -43,7 +43,7 @@ const getAllBooks = async (
   search: string,
   filterData: any
 ): Promise<IGenericResponse<Book[]>> => {
-  const { minPrice, maxPrice } = filterData;
+  const { minPrice, maxPrice, categoryId } = filterData;
 
   const searchFields = {
     OR: [
@@ -69,6 +69,9 @@ const getAllBooks = async (
   };
 
   const priceConditions: any[] = [];
+  const categoryIdCondition = {
+    categoryId: categoryId,
+  };
 
   if (minPrice !== undefined) {
     priceConditions.push({
@@ -96,6 +99,9 @@ const getAllBooks = async (
     whereConditions.push({
       OR: priceConditions,
     });
+  }
+  if (categoryId) {
+    whereConditions.push(categoryIdCondition);
   }
 
   const result = await prisma.book.findMany({

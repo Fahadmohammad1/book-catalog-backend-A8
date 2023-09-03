@@ -17,6 +17,16 @@ const createOrder = async (
   userId: string,
   orderData: IOrderData
 ): Promise<Order[]> => {
+  const availableUser = await prisma.user.findFirst({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!availableUser) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User does not exist');
+  }
+
   const createdOrder = await prisma.order.create({
     data: { userId },
     include: {
