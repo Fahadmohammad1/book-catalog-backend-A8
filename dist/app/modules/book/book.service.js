@@ -42,7 +42,7 @@ const createBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () 
     return result;
 });
 const getAllBooks = (size, page, sortBy, sortOrder, search, filterData) => __awaiter(void 0, void 0, void 0, function* () {
-    const { minPrice, maxPrice } = filterData;
+    const { minPrice, maxPrice, categoryId } = filterData;
     const searchFields = {
         OR: [
             {
@@ -66,6 +66,9 @@ const getAllBooks = (size, page, sortBy, sortOrder, search, filterData) => __awa
         ],
     };
     const priceConditions = [];
+    const categoryIdCondition = {
+        categoryId: categoryId,
+    };
     if (minPrice !== undefined) {
         priceConditions.push({
             price: {
@@ -88,6 +91,9 @@ const getAllBooks = (size, page, sortBy, sortOrder, search, filterData) => __awa
         whereConditions.push({
             OR: priceConditions,
         });
+    }
+    if (categoryId) {
+        whereConditions.push(categoryIdCondition);
     }
     const result = yield prisma_1.default.book.findMany({
         where: {

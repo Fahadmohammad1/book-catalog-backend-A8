@@ -17,6 +17,14 @@ const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const createOrder = (userId, orderData) => __awaiter(void 0, void 0, void 0, function* () {
+    const availableUser = yield prisma_1.default.user.findFirst({
+        where: {
+            id: userId,
+        },
+    });
+    if (!availableUser) {
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'User does not exist');
+    }
     const createdOrder = yield prisma_1.default.order.create({
         data: { userId },
         include: {
