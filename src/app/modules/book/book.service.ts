@@ -33,46 +33,64 @@ const getAllBooks = async (
   search: string,
   filterData: any
 ): Promise<IGenericResponse<Book[]>> => {
+  const { minPrice, maxPrice } = filterData;
+
+  const searchFields = {
+    OR: [
+      {
+        title: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+      {
+        author: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+      {
+        genre: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+    ],
+  };
+
+  const priceConditions: any[] = [];
+
+  if (minPrice !== undefined) {
+    priceConditions.push({
+      price: {
+        gte: Number(minPrice),
+      },
+    });
+  }
+
+  if (maxPrice !== undefined) {
+    priceConditions.push({
+      price: {
+        lt: Number(maxPrice),
+      },
+    });
+  }
+
+  const whereConditions: any[] = [];
+
+  if (search) {
+    whereConditions.push(searchFields);
+  }
+
+  if (priceConditions.length > 0) {
+    whereConditions.push({
+      OR: priceConditions,
+    });
+  }
+
   const result = await prisma.book.findMany({
     where: {
-      AND: [
-        {
-          OR: [
-            {
-              title: {
-                contains: search,
-                mode: 'insensitive',
-              },
-            },
-            {
-              author: {
-                contains: search,
-                mode: 'insensitive',
-              },
-            },
-            {
-              genre: {
-                contains: search,
-                mode: 'insensitive',
-              },
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              price: {
-                gte: filterData.minPrice,
-              },
-            },
-            {
-              price: {
-                lt: filterData.maxPrice,
-              },
-            },
-          ],
-        },
-      ],
+      AND: whereConditions,
     },
     include: {
       category: true,
@@ -85,12 +103,14 @@ const getAllBooks = async (
   });
 
   const total = await prisma.book.count();
+  const totalPage = Math.ceil(total / size);
 
   return {
     meta: {
       page,
       size,
       total,
+      totalPage,
     },
     data: result,
   };

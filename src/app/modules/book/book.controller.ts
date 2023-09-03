@@ -19,7 +19,7 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
   const {
     size = 10,
     page = 1,
-    sortBy = 'createdAt',
+    sortBy = 'publicationDate',
     sortOrder = 'asc',
     search = '',
     ...filterData
