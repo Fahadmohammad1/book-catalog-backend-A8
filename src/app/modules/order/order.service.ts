@@ -56,6 +56,7 @@ const getAllOrders = async (user: JwtPayload): Promise<Order[] | null> => {
     result = await prisma.order.findMany({
       include: {
         user: true,
+        orderedBooks: true,
       },
     });
   }
@@ -64,6 +65,9 @@ const getAllOrders = async (user: JwtPayload): Promise<Order[] | null> => {
     result = await prisma.order.findMany({
       where: {
         userId: user.userId,
+      },
+      include: {
+        orderedBooks: true,
       },
     });
   }
@@ -99,6 +103,9 @@ const getSingleOrder = async (
       where: {
         id: orderId,
         userId: user.userId,
+      },
+      include: {
+        orderedBooks: true,
       },
     });
   }
